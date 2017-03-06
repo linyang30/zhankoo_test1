@@ -1,7 +1,6 @@
-#-*- coding: UTF-8 -*-
 import unittest
 
-from driver import browser
+from test_case.models.driver import browser
 
 
 class MyTest(unittest.TestCase):

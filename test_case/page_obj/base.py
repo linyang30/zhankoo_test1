@@ -1,4 +1,3 @@
-#-*- coding: UTF-8 -*-
 class Page:
 
     url = 'http://www.zhankoo.com'
@@ -26,4 +25,4 @@ class Page:
         self._open(self.url)
 
     def script(self, src):
-        return self.driver.excute_script(src)
+        return self.driver.execute_script(src)

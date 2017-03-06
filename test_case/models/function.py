@@ -1,6 +1,5 @@
-#-*- coding: UTF-8 -*-
 import os
-from driver import browser
+from test_case.models.driver import browser
 
 
 def insert_img(driver, file_name):
