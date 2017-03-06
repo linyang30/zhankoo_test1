@@ -2,10 +2,12 @@ from base import Page
 from selenium.webdriver.common.by import By
 from time import sleep
 
+
 class Login(Page):
     '''
     用户登录界面
     '''
+
 
     url = '/'
     zhankoo_login_button_loc = (By.PARTIAL_LINK_TEXT, '请登录')
@@ -63,16 +65,27 @@ class Login(Page):
 
     search_input_loc = (By.XPATH, '//*[@id="searchText"]')
     search_button_loc = (By.ID, 'searchButton')
-    search_select_loc = (By.ID, 'searchtype')
+    search_select_loc = (By.XPATH, '/html/body/div[5]/div/div[1]/div[1]')
     search_type_zhaozhanhui_loc = (By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/ul/li/div/span[1]')
+    seach_type_zhaozhanzhuang_loc = (By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/ul/li/div/span[2]')
 
-    datePickerStartJS = "$('span[id=searchtype]').attr('value','找展装')"
-
-    #选择搜索类型
-    def search_select_type(self):
-        self.script(self.datePickerStartJS)
+    #选择搜索类型，type=0展会，type=1展装
+    def search_select_type(self, type):
+        self.move_on(self.find_element(*self.search_select_loc))
+        self.find_elements(By.CSS_SELECTOR, 'div.oh span')[type].click()
 
     #点击搜索按钮
-    def search(self):
+    def search_button(self):
         self.find_element(*self.search_button_loc).click()
 
+    #填写搜索关键字
+    def search_keywords(self, keyword):
+        self.find_element(*self.search_input_loc).send_keys(keyword)
+
+    #搜索过程
+    def search(self, type=1, keyword=''):
+        self.open()
+        self.search_select_type(type)
+        self.search_keywords(keyword)
+        self.search_button()
+        sleep(1)

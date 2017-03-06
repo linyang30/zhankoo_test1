@@ -1,3 +1,5 @@
+from selenium.webdriver.common.action_chains import ActionChains
+
 class Page:
 
     url = 'http://www.zhankoo.com'
@@ -26,3 +28,6 @@ class Page:
 
     def script(self, src):
         return self.driver.execute_script(src)
+
+    def move_on(self, element):
+        ActionChains(self.driver).move_to_element(element).perform()
