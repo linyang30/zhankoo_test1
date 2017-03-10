@@ -10,7 +10,7 @@ class Login(Page):
 
 
     url = '/'
-    zhankoo_login_button_loc = (By.PARTIAL_LINK_TEXT, '请登录')
+    zhankoo_login_button_loc = (By.PARTIAL_LINK_TEXT, '登录')
 
     #进入登录页面
     def zhankoo_login(self):
@@ -57,22 +57,24 @@ class Login(Page):
         self.login_button()
         sleep(1)
 
-    user_login_success_loc = (By.XPATH, '//*[@id="pg"]/div/ul/li[2]/a[1]/em')
+    user_login_success_loc = (By.XPATH, '//*[@id="pg"]/div/ul/li[2]/a[3]')
 
     #登录成功
     def user_login_success(self):
         return self.find_element(*self.user_login_success_loc).text
 
     search_input_loc = (By.XPATH, '//*[@id="searchText"]')
-    search_button_loc = (By.ID, 'searchButton')
+    search_button_loc = (By.XPATH, '/html/body/div[2]/div/ul/li[2]/div/div/div[2]/span')
     search_select_loc = (By.XPATH, '/html/body/div[5]/div/div[1]/div[1]')
     search_type_zhaozhanhui_loc = (By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/ul/li/div/span[1]')
     seach_type_zhaozhanzhuang_loc = (By.XPATH, '/html/body/div[5]/div/div[1]/div[1]/ul/li/div/span[2]')
 
     #选择搜索类型，type=0展会，type=1展装
     def search_select_type(self, type):
-        self.move_on(self.find_element(*self.search_select_loc))
-        self.find_elements(By.CSS_SELECTOR, 'div.oh span')[type].click()
+        if type == 0:
+            self.move_on(self.find_element(By.XPATH, '/html/body/div[2]/div/ul/li[2]/div/div/div[1]/div/a[1]'))
+        elif type == 1:
+            self.move_on(self.find_element(By.XPATH, '/html/body/div[2]/div/ul/li[2]/div/div/div[1]/div/a[2]'))
 
     #点击搜索按钮
     def search_button(self):
@@ -83,9 +85,20 @@ class Login(Page):
         self.find_element(*self.search_input_loc).send_keys(keyword)
 
     #搜索过程
-    def search(self, type=1, keyword=''):
+    def search(self, type, keyword):
         self.open()
         self.search_select_type(type)
         self.search_keywords(keyword)
+        current_window = self.driver.current_window_handle
         self.search_button()
+        all_handles = self.driver.window_handles
+        for handle in all_handles:
+            if handle != current_window:
+                self.driver.switch_to_window(handle)
+                res = 0
+                if type == 0:
+                    res = self.find_element(By.XPATH, '//*[@id="searchCount"]').text
+                else:
+                    res = self.find_element(By.XPATH, '//*[@id="TotalCount"]').text
+                assert int(res) > 0
         sleep(1)

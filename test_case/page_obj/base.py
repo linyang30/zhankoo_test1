@@ -2,7 +2,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 class Page:
 
-    url = 'http://www.zhankoo.com'
+    url = 'http://www.zhankoo-uat.com'
 
     def __init__(self, selenium_driver, base_url = url):
         self.base_url = base_url
