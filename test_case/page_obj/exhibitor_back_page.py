@@ -5,7 +5,8 @@ from selenium.webdriver.support.select import Select
 import time
 from selenium.webdriver.common.keys import Keys
 
-class Exhibitor_back(Page):
+
+class Exhibitor_Back(Page):
     '''参展商后台'''
 
     url = '/'
@@ -22,6 +23,7 @@ class Exhibitor_back(Page):
                 self.driver.switch_to_window(handle)
         back_window = self.driver.current_window_handle
         self.find_element(By.XPATH, '//*[@id="files"]/li[2]/ul/li[2]/a').click()
+        current_req_num = int(self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[2]/ul/li[1]/a/span').text)
         self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[1]/ul/li/a').click()
         all_handles = self.driver.window_handles
         for handle in all_handles:
@@ -31,11 +33,11 @@ class Exhibitor_back(Page):
         self.find_element(By.XPATH, '//*[@id="Subject"]').send_keys(info['title'])
         #填写展会名称
         self.find_element(By.XPATH, '//*[@id="ExhibitionName"]').send_keys(info['exhibition_name'])
-        time.sleep(2)
+        time.sleep(1)
         self.find_element(By.XPATH, '//*[@id="ExhibitionName"]').send_keys(Keys.ENTER)
         #填写展会编号
         self.find_element(By.XPATH, '//*[@id="BoothName"]').send_keys(info['num'])
-        time.sleep(2)
+        time.sleep(1)
         self.find_element(By.XPATH, '//*[@id="BoothName"]').send_keys(Keys.ENTER)
         #选择服务类型
         sel_service_type = self.find_element(By.ID, 'ServiceItem')
@@ -54,6 +56,10 @@ class Exhibitor_back(Page):
         self.find_element(By.ID, 'DecorateDemand').send_keys(info['decorate_req'])
         #提交需求
         self.find_element(By.ID, 'btnDecorateBookSave').click()
-        time.sleep(10)
+        req_num = int(self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[2]/ul/li[1]/a/span').text)
+        assert req_num == current_req_num + 1
+
+
+
 
 
