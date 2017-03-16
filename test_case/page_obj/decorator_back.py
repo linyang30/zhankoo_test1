@@ -40,23 +40,17 @@ class DecoratorBack(Page):
         # self.find_element(By.XPATH, '//*[@id="Order"]').send_keys(info['case_order'])
         js_case_order = "$('input[id=Order]').attr('value','%s')" % info['case_order']
         self.script(js_case_order)
-        color_elems = random.sample(self.find_elements(By.CSS_SELECTOR, '#tbInit input'), 3)
-        for elem in color_elems[1:]:
+        color_elems = random.sample(self.find_elements(By.CSS_SELECTOR, '#tbInit input')[:-1], 3)
+        for elem in color_elems:
             elem.click()
 
-        print(len(self.find_elements(By.XPATH, '//input[@name="FileUpload1"]')))
-
-        self.find_element(By.CSS_SELECTOR, '#FileUpload1').click()
-        time.sleep(1)
-        upload_img('D:\\Temp\\1.jpg')
-
-        '''
-        for elem in self.driver.find_elements_by_id('FileUpload1'):
+        self.driver.switch_to_frame('DecorateCaseImageIframe')
+        for elem in self.find_elements(By.CSS_SELECTOR, '#FileUpload1'):
             elem.click()
             time.sleep(1)
             upload_img('D:\\Temp\\1.jpg')
-        '''
+
+        self.driver.switch_to_default_content()
         self.find_element(By.XPATH, '//*[@id="BtnDecorateCaseSubmit"]').click()
-        time.sleep(1)
-        assert '测试' in self.find_element(By.XPATH, '//*[@id="companycase"]/div[4]/div/ul/li[2]/span[1]').text
+        time.sleep(5)
 

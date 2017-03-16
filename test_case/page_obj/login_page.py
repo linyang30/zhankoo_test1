@@ -1,7 +1,8 @@
 from base import Page
 from selenium.webdriver.common.by import By
 from time import sleep
-
+from selenium.webdriver.support.select import Select
+from selenium.webdriver import ActionChains
 
 class Login(Page):
     '''
@@ -102,3 +103,34 @@ class Login(Page):
                     res = self.find_element(By.XPATH, '//*[@id="TotalCount"]').text
                 assert int(res) > 0
         sleep(1)
+
+    #首页参展宝发布展会需求
+    def canzhanbao_zhanhui(self, info):
+        self.open()
+        ActionChains(self.driver).move_to_element(self.find_element(By.XPATH, '/html/body/div[5]/div[1]/div[2]/i[1]')).perform()
+        self.find_element(By.XPATH, '//*[@id="Contact"]').send_keys(info['canzhanbao_name'])
+        self.find_element(By.XPATH, '//*[@id="Telephone"]').send_keys(info['canzhanbao_phone'])
+        self.find_element(By.XPATH, '//*[@id="index_right_nav"]/div[6]/label[1]').click()
+        self.find_element(By.XPATH, '//*[@id="free_sub_czb"]').click()
+        self.driver.switch_to_frame('layui-layer-iframe1')
+        self.find_element(By.XPATH, '//*[@id="BoothBookSupplement"]/ul/li[2]/input').send_keys(info['canzhanbao_company_name'])
+        self.find_element(By.XPATH, '//*[@id="BoothBookSupplement"]/ul/li[4]/input').send_keys(info['canzhanbao_exhibit'])
+        self.find_element(By.XPATH, '//*[@id="BoothBookSupplement"]/ul/li[6]/div/input[%s]' % info['canzhanbao_first']).click()
+        self.find_element(By.XPATH, '//*[@id="BoothBookSupplement"]/ul/li[8]/input').send_keys(info['canzhanbao_intent_city'])
+        js_time = "$('input[name=ExhibitOn]').attr('value','%s')" % info['time']
+        self.script(js_time)
+        Select(self.find_element(By.XPATH, '//*[@id="BoothBookSupplement"]/ul/li[12]/select')).select_by_visible_text(info['canzhanbao_area'])
+        self.find_element(By.XPATH, '//*[@id="BoothBookSupplement"]/ul/li[14]/input').send_keys(info['canzhanbao_intent_exhibition'])
+        self.find_element(By.XPATH, '//*[@id="BtnBoothBookSupplement"]').click()
+        sleep(1)
+        assert '您的申请已提交' in self.find_element(By.XPATH, '//*[@id="ApplyBox"]/div/div/h2').text
+
+
+    #首页参展宝发布展装需求
+    def canzhanbao_zhanzhuang(self, info):
+        self.open()
+        ActionChains(self.driver).move_to_element(self.find_element(By.XPATH, '/html/body/div[5]/div[1]/div[2]/i[1]')).perform()
+        self.find_element(By.XPATH, '//*[@id="Contact"]').send_keys(info['canzhanbao_name'])
+        self.find_element(By.XPATH, '//*[@id="Telephone"]').send_keys(info['canzhanbao_phone'])
+        self.find_element(By.XPATH, '//*[@id="index_right_nav"]/div[6]/label[2]').click()
+

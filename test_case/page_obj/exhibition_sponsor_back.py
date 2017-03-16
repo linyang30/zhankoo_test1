@@ -24,8 +24,8 @@ class Exhibition_Sponsor_Back(Page):
         self.find_element(By.XPATH, '//*[@id="menu"]/ul[1]/li[2]/a').click()
         #基本信息
         self.find_element(By.XPATH, '//*[@id="BtnBasic"]').click()
-        self.find_element(By.XPATH, '//*[@id="Name"]').send_keys('测试展会' + str(ran_int))
-        self.find_element(By.XPATH, '//*[@id="ShortName"]').send_keys('测试展会')
+        self.find_element(By.XPATH, '//*[@id="Name"]').send_keys(info['exhibition_title'])
+        self.find_element(By.XPATH, '//*[@id="ShortName"]').send_keys(info['exhibition_short_name'])
         Select(self.find_element(By.XPATH, '//*[@id="IndustryID"]')).select_by_visible_text(info['exhibition_type'])
         self.find_element(By.XPATH, '//*[@id="2"]').click()
         self.find_element(By.XPATH, '//*[@id="3"]').click()
@@ -43,7 +43,7 @@ class Exhibition_Sponsor_Back(Page):
         self.find_element(By.XPATH, '//*[@id="Site"]').send_keys('www.zhankoo.com')
         self.find_element(By.XPATH, '//*[@id="DivBasic"]/div/button[1]').click()
         time.sleep(1)
-        assert '测试展会' in self.find_element(By.XPATH, '//*[@id="BasicDetail"]/table/tbody/tr[1]/td[2]').text
+        assert '测试' in self.find_element(By.XPATH, '//*[@id="BasicDetail"]/table/tbody/tr[1]/td[2]').text
 
         #展会介绍
         self.find_element(By.XPATH, '//*[@id="BtnIntro"]').click()
@@ -52,7 +52,7 @@ class Exhibition_Sponsor_Back(Page):
         self.find_element(By.XPATH, '//*[@id="Tag"]').send_keys(info['exhibiton_tag'])
         self.find_element(By.XPATH, '//*[@id="DivIntro"]/div/button[1]').click()
         time.sleep(1)
-        assert '测试展会' in self.find_element(By.XPATH, '//*[@id="DivIntro2"]/table/tbody/tr[1]/td[2]').text
+        assert '测试' in self.find_element(By.XPATH, '//*[@id="DivIntro2"]/table/tbody/tr[1]/td[2]').text
 
         #举办机构
         self.find_element(By.XPATH, '//*[@id="BtnInsti"]').click()
