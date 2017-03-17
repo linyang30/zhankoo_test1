@@ -133,4 +133,63 @@ class Login(Page):
         self.find_element(By.XPATH, '//*[@id="Contact"]').send_keys(info['canzhanbao_name'])
         self.find_element(By.XPATH, '//*[@id="Telephone"]').send_keys(info['canzhanbao_phone'])
         self.find_element(By.XPATH, '//*[@id="index_right_nav"]/div[6]/label[2]').click()
+        self.find_element(By.XPATH, '//*[@id="free_sub_czb"]').click()
+        self.driver.switch_to_frame('layui-layer-iframe1')
+        Select(self.find_element(By.XPATH, '//*[@id="DecorateBookSupplement"]/ul/li[2]/select')).select_by_visible_text(info['service_type'])
+        self.find_element(By.XPATH, '//*[@id="DecorateBookSupplement"]/ul/li[4]/input').send_keys(info['exhibition_name'])
+        self.find_element(By.XPATH, '//*[@id="DecorateBookSupplement"]/ul/li[6]/input').send_keys(info['area'])
+        js_time = "$('input[id=FinishOn]').attr('value','%s')" % info['time']
+        self.script(js_time)
+        Select(self.find_element(By.XPATH, '//*[@id="DecorateBookSupplement"]/ul/li[10]/select')).select_by_visible_text(info['price'])
+        self.find_element(By.XPATH, '//*[@id="DecorateBookSupplement"]/ul/li[12]/input').send_keys(info['company_name'])
+        self.find_element(By.XPATH, '//*[@id="BtnDecorateBookSupplement"]').click()
+        sleep(1)
+        assert '您的申请已提交' in self.find_element(By.XPATH, '//*[@id="ApplyBox"]/div/div/h2').text
 
+    #首页展会合作
+    def exhibition_coopration(self, info):
+        self.open()
+        current_window = self.driver.current_window_handle
+        ActionChains(self.driver).context_click(self.find_element(By.XPATH, '/html/body/div[5]/div[1]/div[3]/i[1]')).perform()
+        sleep(1)
+        self.find_element(By.XPATH, '/html/body/div[5]/div[1]/div[3]/div[1]/a').click()
+        handles = self.driver.window_handles
+        for handle in handles:
+            if handle != current_window:
+                self.driver.switch_to_window(handle)
+        sleep(2)
+        self.find_element(By.XPATH, '/html/body/div[3]/div/label[1]/a').click()
+        self.find_element(By.XPATH, '//*[@id="CompanyName"]').send_keys(info['company_name'])
+        self.find_element(By.XPATH, '//*[@id="ExhibitionName"]').send_keys(info['exhibition_name'])
+        self.find_element(By.XPATH, '//*[@id="Contact"]').send_keys(info['contact_name'])
+        js_mobile = "$('input[id=Phone]').attr('value','%s')" % info['mobile']
+        self.script(js_mobile)
+        self.find_element(By.XPATH, '//*[@id="Telephone"]').send_keys(info['phone'])
+        self.find_element(By.XPATH, '//*[@id="Email"]').send_keys(info['email'])
+        self.find_element(By.XPATH, '//*[@id="DoExhibitoinApply"]/div/a[2]').click()
+        sleep(1)
+        assert '展酷网已收到您提交的申请信息' in self.find_element(By.XPATH, '//*[@id="successful"]/div/p').text
+
+
+    #首页展装合作
+    def decorate_coopration(self, info):
+        self.open()
+        current_window = self.driver.current_window_handle
+        ActionChains(self.driver).context_click(self.find_element(By.XPATH, '/html/body/div[5]/div[1]/div[3]/i[1]')).perform()
+        sleep(1)
+        self.find_element(By.XPATH, '/html/body/div[5]/div[1]/div[3]/div[1]/div[2]/label').click()
+        self.find_element(By.XPATH, '/html/body/div[5]/div[1]/div[3]/div[1]/a').click()
+        handles = self.driver.window_handles
+        for handle in handles:
+            if handle != current_window:
+                self.driver.switch_to_window(handle)
+        sleep(2)
+        self.find_element(By.XPATH, '/html/body/div[9]/div/a[2]').click()
+        self.find_element(By.XPATH, '//*[@id="CompanyName"]').send_keys(info['company_name'])
+        self.find_element(By.XPATH, '//*[@id="Contact"]').send_keys(info['contact_name'])
+        self.find_element(By.XPATH, '//*[@id="Phone"]').send_keys(info['mobile'])
+        self.find_element(By.XPATH, '//*[@id="Telephone"]').send_keys(info['phone'])
+        self.find_element(By.XPATH, '//*[@id="Email"]').send_keys(info['email'])
+        self.find_element(By.XPATH, '//*[@id="DoExhibitoinApply"]/div/a[2]').click()
+        sleep(1)
+        assert '展酷网已收到您提交的申请信息' in self.find_element(By.XPATH, '//*[@id="successful"]/div/p').text
