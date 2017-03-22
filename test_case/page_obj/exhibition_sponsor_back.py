@@ -160,6 +160,84 @@ class Exhibition_Sponsor_Back(Page):
         time.sleep(1)
         assert '测试' in self.find_element(By.XPATH, '//*[@id="DivExhibitor2"]/table/tbody/tr/td[2]').text
 
+    #主办方后台条目遍历
+    def exhibition_sponsor_back_test(self):
+        Login(self.driver).user_login(username='18320836325', password='123456')
+        main_window = self.driver.current_window_handle
+        self.find_element(By.XPATH, '//*[@id="pg"]/div/ul/li[2]/a[2]').click()
+        all_handles = self.driver.window_handles
+        for handle in all_handles:
+            if handle != main_window:
+                self.driver.switch_to_window(handle)
+
+        #所有展会
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[1]/li[1]/a').click()
+        assert '展会信息' in self.find_element(By.XPATH, '//*[@id="ListPaged"]/div[1]/table/tbody/tr[1]/td[1]').text
+
+        #发布展会
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[1]/li[2]/a').click()
+        assert '发布展会' in self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[2]/div[1]/span').text
+
+        #展位订单
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[2]/li[1]/a').click()
+        assert int(self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[3]/ul/li[1]/a/span').text) >= 0
+
+        #展商预登记
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[2]/li[2]/a').click()
+        assert '请求' in self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div/div[1]/span').text
+
+        #观众预登记
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[3]/li[1]/a').click()
+        assert '观众预登记' in self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[1]/span[1]').text
+
+        #门票管理
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[3]/li[2]/a').click()
+        assert '门票列表' in self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[1]/span[1]').text
+
+        #所有推广活动
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[4]/li[1]/a').click()
+        assert '推广活动' in self.find_element(By.XPATH, '//*[@id="topHeader"]/div[2]/div/a[3]').text
+
+        #H5工具
+
+
+        #短信营销
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[4]/li[3]/a').click()
+        assert int(self.find_element(By.XPATH, '/html/body/div[4]/div[2]/div/div[2]/h2/strong').text) >= 0
+
+        #所有资金明细
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[5]/li[1]/a').click()
+        assert eval(self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[1]/strong').text) >= 0
+
+        #账户管理
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[5]/li[2]/a').click()
+        assert '账户管理' in self.find_element(By.XPATH, '//*[@id="divNew"]/div[1]/span[1]').text
+
+        #展会数据
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[6]/li/a').click()
+        assert '展会数据' in self.find_element(By.XPATH, '//*[@id="topHeader"]/div[2]/div/a[3]').text
+
+        #收到的评论
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[7]/li/a').click()
+        assert '收到的评论' in self.find_element(By.XPATH, '/html/body/div[3]/div/div[2]/div[1]/span').text
+
+        #基本资料
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[8]/li[1]/a').click()
+        assert '基本资料' in self.find_element(By.XPATH, '/html/body/div[4]/div[2]/div[1]/h2').text
+
+        #公司信息
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[8]/li[2]/a').click()
+        assert '企业信息' in self.find_element(By.XPATH, '/html/body/div[4]/div[2]/div[1]/h2').text
+
+        #修改密码
+        self.find_element(By.XPATH, '//*[@id="menu"]/ul[8]/li[3]/a').click()
+        back_window = self.driver.current_window_handle
+        all_handles = self.driver.window_handles
+        for handle in all_handles:
+            if handle != main_window and handle != back_window:
+                self.driver.switch_to_window(handle)
+        assert '修改密码' in self.find_element(By.XPATH, '/html/body/div[2]/div/h1/span').text
+        self.driver.switch_to_window(back_window)
 
 
 

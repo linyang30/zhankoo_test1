@@ -60,6 +60,83 @@ class Exhibitor_Back(Page):
         assert req_num == current_req_num + 1
 
 
+    #参展商后台条目遍历
+    def exhibitor_back_test(self):
+        Login(self.driver).user_login(username='13500000018', password='123456')
+        main_window = self.driver.current_window_handle
+        self.find_element(*self.exhibitor_back_button_loc).click()
+        all_handles = self.driver.window_handles
+        for handle in all_handles:
+            if handle != main_window:
+                self.driver.switch_to_window(handle)
+        #展会订单
+        self.find_element(By.XPATH, '//*[@id="files"]/li[1]/ul/li[1]/a').click()
+        assert int(self.find_element(By.XPATH, '//*[@id="MenuState"]/li[1]/a/span').text) >= 0
+
+        #我的门票
+        self.find_element(By.XPATH, '//*[@id="files"]/li[1]/ul/li[2]/a').click()
+        assert '门票信息' in self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div/table/tbody[1]/tr/th[1]').text
+
+        #我的预定
+        self.find_element(By.XPATH, '//*[@id="files"]/li[1]/ul/li[3]/a').click()
+        assert '展会信息' in self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div/table/tbody[1]/tr/th[1]').text
+
+        #展装订单
+        self.find_element(By.XPATH, '//*[@id="files"]/li[2]/ul/li[1]/a').click()
+        assert int(self.find_element(By.XPATH, '//*[@id="blankRight"]/div[2]/ul/li[1]/a/span').text) >= 0
+
+        #展装需求
+        self.find_element(By.XPATH, '//*[@id="files"]/li[2]/ul/li[2]/a').click()
+        assert int(self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[2]/ul/li[1]/a/span').text) >= 0
+
+        #账户明细
+        self.find_element(By.XPATH, '//*[@id="files"]/li[3]/ul/li[1]/a').click()
+        assert '展位钱包' in self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div[1]/ul/li[1]/div/span[1]').text
+
+        #银行卡管理
+        self.find_element(By.XPATH, '//*[@id="files"]/li[3]/ul/li[2]/a').click()
+        assert '资金安全' in self.find_element(By.XPATH, '/html/body/div[3]/div[2]/div/div[1]/p').text
+
+        #我的优惠券
+        self.find_element(By.XPATH, '//*[@id="files"]/li[4]/ul/li[1]/a').click()
+        assert '优惠' in self.find_element(By.XPATH, '//*[@id="header"]/div[2]/div/a[3]').text
+
+        #我的卡券
+        self.find_element(By.XPATH, '//*[@id="files"]/li[4]/ul/li[2]/a').click()
+        assert '我的卡券' in self.find_element(By.XPATH, '//*[@id="topHeader"]/div[2]/div/a[3]').text
+
+        #我的关注
+        self.find_element(By.XPATH, '//*[@id="files"]/li[5]/ul/li/a').click()
+        assert '我的关注' in self.find_element(By.XPATH, '/html/body/div[4]/div[2]/div/a[3]').text
+
+        #我的点评
+        self.find_element(By.XPATH, '//*[@id="files"]/li[6]/ul/li/a').click()
+        assert '我的点评' in self.find_element(By.XPATH, '/html/body/div[2]/div[2]/div/a[3]').text
+
+        #基本资料
+        self.find_element(By.XPATH, '//*[@id="files"]/li[7]/ul/li[1]/a').click()
+        assert '个人资料' in self.find_element(By.XPATH, '/html/body/div[4]/div/div[2]/div/div[1]/h2').text
+
+        #参展信息
+        self.find_element(By.XPATH, '//*[@id="files"]/li[7]/ul/li[2]/a').click()
+        assert '参展信息' in self.find_element(By.XPATH, '/html/body/div[3]/div/a[3]').text
+
+        #修改密码
+        self.find_element(By.XPATH, '//*[@id="files"]/li[7]/ul/li[3]/a').click()
+        back_window = self.driver.current_window_handle
+        all_handles = self.driver.window_handles
+        for handle in all_handles:
+            if handle != main_window and handle != back_window:
+                self.driver.switch_to_window(handle)
+        assert '修改密码' in self.find_element(By.XPATH, '/html/body/div[2]/div/h1/span').text
+        self.driver.switch_to_window(back_window)
+
+        #全部消息
+        self.find_element(By.XPATH, '//*[@id="files"]/li[8]/ul/li/a').click()
+        assert '全部消息' in self.find_element(By.XPATH, '/html/body/div[2]/div[2]/div/a[3]').text
+
+
+
 
 
 
